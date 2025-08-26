@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const BASE_URL = "https://parcel-delivery-system-apis.vercel.app"; // Replace with your actual base URL
+const BASE_URL = "https://parcel-delivery-system-apis.vercel.app"; 
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({

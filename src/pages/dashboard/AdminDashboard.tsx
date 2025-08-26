@@ -55,33 +55,33 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="p-6 space-y-10">
+    <div className="p-4 sm:p-6 space-y-10">
       {/* Header */}
-      <h2 className="text-3xl font-bold text-gray-800">📦 Admin Dashboard</h2>
+      <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">
+        📦 Admin Dashboard
+      </h2>
 
       {/* Overview Cards */}
       <OverviewCards parcels={parcels} />
 
       {/* Parcels Section */}
       <section>
-        <h3 className="text-xl font-semibold mb-4 text-gray-700">
+        <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700">
           Parcels Management
         </h3>
 
         {parcelsLoading ? (
           <Skeleton className="h-40" />
         ) : (
-          <div className="grid gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {pageData.map((p: any) => (
               <div
                 key={p._id}
-                className="p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition flex justify-between items-center"
+                className="p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
               >
                 {/* Parcel Info */}
                 <div>
-                  <p className="font-semibold text-gray-900">
-                    {p.trackingId}
-                  </p>
+                  <p className="font-semibold text-gray-900">{p.trackingId}</p>
                   <p className="text-sm text-gray-500">
                     Status:{" "}
                     <span className="font-medium text-indigo-600">
@@ -91,22 +91,22 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => changeStatus(p._id, "Dispatched")}
-                    className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200"
+                    className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 cursor-pointer"
                   >
                     Dispatch
                   </button>
                   <button
                     onClick={() => changeStatus(p._id, "In Transit")}
-                    className="px-3 py-1 text-sm bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200"
+                    className="px-3 py-1 text-sm bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 cursor-pointer"
                   >
                     In Transit
                   </button>
                   <button
                     onClick={() => changeStatus(p._id, "Delivered")}
-                    className="px-3 py-1 text-sm bg-green-500 text-white rounded-lg hover:bg-green-600"
+                    className="px-3 py-1 text-sm bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer"
                   >
                     Delivered
                   </button>
@@ -129,18 +129,18 @@ const AdminDashboard: React.FC = () => {
 
       {/* Users Section */}
       <section>
-        <h3 className="text-xl font-semibold mb-4 text-gray-700">
+        <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700">
           User Management
         </h3>
 
         {usersLoading ? (
           <Skeleton className="h-40" />
         ) : (
-          <div className="grid gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {users.map((u: any) => (
               <div
                 key={u._id}
-                className="p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition flex justify-between items-center"
+                className="p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
               >
                 {/* User Info */}
                 <div>
@@ -153,7 +153,7 @@ const AdminDashboard: React.FC = () => {
                 {/* Block/Unblock Button */}
                 <button
                   onClick={() => toggleBlock(u._id, !u.isBlocked)}
-                  className={`px-3 py-1 text-sm rounded-lg transition ${
+                  className={`px-3 py-1 text-sm rounded-lg transition cursor-pointer ${
                     u.isBlocked
                       ? "bg-red-100 text-red-600 hover:bg-red-200"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"

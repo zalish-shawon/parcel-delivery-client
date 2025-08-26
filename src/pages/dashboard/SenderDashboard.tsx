@@ -39,7 +39,7 @@ const SenderDashboard: React.FC = () => {
     try {
       const parsed = parcelSchema.parse({ receiverId, weight, address });
       await createParcel(parsed).unwrap();
-      toast.success("Parcel created");
+      toast.success("✅ Parcel created");
       setReceiverId("");
       setWeight(1);
       setAddress("");
@@ -53,7 +53,7 @@ const SenderDashboard: React.FC = () => {
   const handleCancel = async (id: string) => {
     try {
       await cancelParcel({ id }).unwrap();
-      toast.success("Parcel cancelled");
+      toast.success("❌ Parcel cancelled");
       refetch();
     } catch (err: any) {
       toast.error(err.data?.message || err.message || "Cancel error");
@@ -61,23 +61,28 @@ const SenderDashboard: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2 className="text-2xl mb-4">Sender Dashboard</h2>
+    <div className="p-6">
+      <h2 className="text-3xl font-bold mb-6 text-gray-800">
+        📦 Sender Dashboard
+      </h2>
 
-      <div className="bg-white p-4 rounded shadow mb-4">
-        <h3 className="font-semibold mb-2">Create Parcel</h3>
+      {/* Create Parcel Card */}
+      <div className="bg-white p-6 rounded-2xl shadow-md mb-8 border border-gray-100">
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          ➕ Create Parcel
+        </h3>
         <form
-          className="grid grid-cols-1 md:grid-cols-3 gap-2"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4"
           onSubmit={handleCreate}
         >
           <input
-            className="input"
+            className="input border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
             placeholder="Receiver ID"
             value={receiverId}
             onChange={(e) => setReceiverId(e.target.value)}
           />
           <input
-            className="input"
+            className="input border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
             type="number"
             step="0.1"
             min={0.1}
@@ -85,39 +90,64 @@ const SenderDashboard: React.FC = () => {
             onChange={(e) => setWeight(Number(e.target.value))}
           />
           <input
-            className="input"
+            className="input border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
             placeholder="Address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
-          <div className="md:col-span-3">
-            <button className="btn" disabled={creating}>
+          <div className="md:col-span-3 flex justify-end">
+            <button
+              className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              disabled={creating}
+            >
               {creating ? "Creating..." : "Create Parcel"}
             </button>
           </div>
         </form>
       </div>
 
+      {/* My Parcels Section */}
       <div>
-        <h3 className="font-semibold mb-2">My Parcels</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          📑 My Parcels
+        </h3>
         {isLoading ? (
           <Skeleton className="h-40" />
+        ) : parcels.length === 0 ? (
+          <div className="text-center text-gray-500 bg-gray-50 p-6 rounded-xl shadow">
+            No parcels found 🚫
+          </div>
         ) : (
-          <div className="space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {pageData.map((p: any) => (
               <div
                 key={p._id}
-                className="p-3 bg-white rounded shadow flex justify-between"
+                className="p-4 bg-white rounded-xl shadow hover:shadow-lg transition flex justify-between items-center border border-gray-100"
               >
                 <div>
-                  <div className="font-semibold">{p.trackingId}</div>
-                  <div className="text-sm">Status: {p.status}</div>
+                  <div className="font-semibold text-gray-800">
+                    {p.trackingId}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    Status:{" "}
+                    <span
+                      className={`font-medium ${
+                        p.status === "Requested"
+                          ? "text-yellow-600"
+                          : p.status === "Delivered"
+                          ? "text-green-600"
+                          : "text-blue-600"
+                      }`}
+                    >
+                      {p.status}
+                    </span>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
                   {p.status === "Requested" && (
                     <button
                       onClick={() => handleCancel(p._id)}
-                      className="btn btn-danger"
+                      className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
                     >
                       Cancel
                     </button>
@@ -128,7 +158,8 @@ const SenderDashboard: React.FC = () => {
           </div>
         )}
 
-        <div className="mt-4">
+        {/* Pagination */}
+        <div className="mt-6 flex justify-center">
           <Pagination
             current={page}
             total={total}

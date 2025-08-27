@@ -28,6 +28,10 @@ npm install
 yarn install
 ```
 
+### Live URL: 
+
+https://parcel-delivery-client.vercel.app
+
 ### 2. Project Structure
 
 ```

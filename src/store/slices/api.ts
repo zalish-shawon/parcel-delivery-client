@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const BASE_URL = "https://parcel-delivery-system-apis.vercel.app"; 
+const BASE_URL = "https://parcel-delivery-system-apis.vercel.app/api"; 
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -18,14 +18,14 @@ export const api = createApi({
       { token: string; user: any },
       { email: string; password: string }
     >({
-      query: (body) => ({ url: "/api/auth/login", method: "POST", body }),
+      query: (body) => ({ url: "/auth/login", method: "POST", body }),
       invalidatesTags: ["Auth"],
     }),
     register: build.mutation<
       any,
       { name: string; email: string; password: string; role: string }
     >({
-      query: (body) => ({ url: "/api/auth/register", method: "POST", body }),
+      query: (body) => ({ url: "/auth/register", method: "POST", body }),
     }),
 
     // Parcels
@@ -33,7 +33,7 @@ export const api = createApi({
       any,
       { receiverId: string; weight: number; address: string }
     >({
-      query: (body) => ({ url: "/api/parcels", method: "POST", body }),
+      query: (body) => ({ url: "/parcels", method: "POST", body }),
       invalidatesTags: (result) =>
         result ? [{ type: "Parcel", id: "LIST" }] : [],
     }),
@@ -51,7 +51,7 @@ export const api = createApi({
           : [{ type: "Parcel", id: "LIST" }],
     }),
     getIncomingParcels: build.query<any[], void>({
-      query: () => ({ url: "/api/parcels/incoming" }),
+      query: () => ({ url: "/parcels/incoming" }),
       providesTags: (result) =>
         result
           ? [
@@ -65,7 +65,7 @@ export const api = createApi({
     }),
     cancelParcel: build.mutation<any, { id: string }>({
       query: ({ id }) => ({
-        url: `/api/parcels/cancel/${id}`,
+        url: `/parcels/cancel/${id}`,
         method: "PATCH",
       }),
       invalidatesTags: [
@@ -78,7 +78,7 @@ export const api = createApi({
       { id: string; status: string; note?: string }
     >({
       query: ({ id, ...rest }) => ({
-        url: `/api/parcels/status/${id}`,
+        url: `/parcels/status/${id}`,
         method: "PATCH",
         body: rest,
       }),
@@ -89,12 +89,12 @@ export const api = createApi({
       ],
     }),
     trackParcel: build.query<any, { trackingId: string }>({
-      query: ({ trackingId }) => ({ url: `/api/parcels/track/${trackingId}` }),
+      query: ({ trackingId }) => ({ url: `/parcels/track/${trackingId}` }),
     }),
 
     // Admin / Users
     getAllUsers: build.query<any[], void>({
-      query: () => ({ url: "/api/users" }),
+      query: () => ({ url: "/users" }),
       providesTags: (result) =>
         result
           ? [
@@ -104,15 +104,15 @@ export const api = createApi({
           : [{ type: "User", id: "LIST" }],
     }),
     blockUser: build.mutation<any, { id: string }>({
-      query: ({ id }) => ({ url: `/api/users/block/${id}`, method: "PATCH" }),
+      query: ({ id }) => ({ url: `/users/block/${id}`, method: "PATCH" }),
       invalidatesTags: [{ type: "User", id: "LIST" }],
     }),
     unblockUser: build.mutation<any, { id: string }>({
-      query: ({ id }) => ({ url: `/api/users/unblock/${id}`, method: "PATCH" }),
+      query: ({ id }) => ({ url: `/users/unblock/${id}`, method: "PATCH" }),
       invalidatesTags: [{ type: "User", id: "LIST" }],
     }),
     getAllParcelsAdmin: build.query<any[], void>({
-      query: () => ({ url: "/api/admin/parcels" }),
+      query: () => ({ url: "/admin/parcels" }),
       providesTags: (result) =>
         result
           ? [
